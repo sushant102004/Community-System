@@ -1,6 +1,7 @@
-import mongoose from 'mongoose'
+import mongoose, { Model } from 'mongoose'
 import validator from 'validator'
 import { Snowflake } from '@theinternetfolks/snowflake'
+import bcrypt from 'bcryptjs'
 
 const userSchema = new mongoose.Schema({
     id: {
@@ -14,7 +15,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         validate: {
-            validator: function(value : string) : boolean {
+            validator(value : string) : boolean {
                 return validator.isAlpha(value)
             }
         }
@@ -25,8 +26,9 @@ const userSchema = new mongoose.Schema({
         maxLength: 128,
         required: true,
         trim: true,
+        unique: true,
         validate: {
-            validator: function(value : string) : boolean {
+            validator(value : string) : boolean {
                 return validator.isEmail(value)
             }
         }
@@ -38,7 +40,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         validate: {
-            validator: function(value : string) : boolean {
+            validator(value : string) : boolean {
                 return validator.isAlphanumeric(value)
             }
         }
@@ -49,3 +51,14 @@ const userSchema = new mongoose.Schema({
         default: Date.now()
     }
 })
+
+userSchema.pre('save', async function(next) {
+    if(!this.isModified(this.password)) return next()
+    this.password = await bcrypt.hash(this.password, 12)
+    this.email = this.email.toLocaleLowerCase()
+    next()
+})
+
+const User = mongoose.model('User', userSchema)
+
+export { User }

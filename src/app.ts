@@ -5,6 +5,8 @@ import { Request, Response } from 'express'
 import { CustomError } from './utils/customError'
 import errorController from './controller/errorController'
 
+import { authRouter } from './routes/authRoutes'
+
 dotenv.config()
 
 const app = express()
@@ -14,7 +16,7 @@ app.use(express.json())
 
 mongoose.set('strictQuery', false)
 
-mongoose.connect('mongodb://localhost:27017/theInternetFolks')
+mongoose.connect('mongodb://root:root1234@127.0.0.1:27017/theInternetFolks?authSource=admin')
     .then(() => {
         app.listen(PORT)
         console.log(`Listening On PORT ${PORT}`)
@@ -28,8 +30,10 @@ app.get('/', (req: Request, res : Response) => {
     })
 })
 
+app.use('/v1/auth', authRouter)
+
 app.get('*', (req: Request, res : Response, next: NextFunction) => {
-    next(new CustomError(`The Route ${req.originalUrl} is not defined`, '400')) 
+    next(new CustomError(`The Route ${req.originalUrl} is not defined`, '400'))
 })
 
 
