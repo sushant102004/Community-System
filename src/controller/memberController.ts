@@ -34,4 +34,17 @@ const addMember = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-export { addMember }
+const deleteMember = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await Member.findOneAndRemove({
+            id: req.params.id,
+        })
+        res.status(200).json({
+            status: true
+        })
+    } catch (err) {
+        return next(err)
+    }
+}
+
+export { addMember, deleteMember }
