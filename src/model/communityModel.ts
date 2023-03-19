@@ -6,7 +6,7 @@ interface SavedCommunityModel extends mongoose.Document {
     id: string,
     name: string,
     slug: string,
-    owner: mongoose.ObjectId,
+    owner: string,
     created_at: Date,
     updated_at: Date
 }
@@ -28,7 +28,8 @@ const communitySchema = new mongoose.Schema({
 
     owner: {
         type: String,
-        ref: 'User'
+        ref: 'User',
+        required: true,
     },
 
     created_at: {
@@ -40,6 +41,15 @@ const communitySchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    __v: { type: Number, select: false},
+    // _id: { type: mongoose.Schema.Types.ObjectId, select: false},
+}, {
+    toJSON: {
+        transform: function (doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+        }
+    }
 })
 
 communitySchema.pre('save', async function(next) {

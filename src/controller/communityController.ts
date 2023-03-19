@@ -2,7 +2,6 @@ import { SavedUserDocument, User } from './../model/userModel'
 import { Request, Response, NextFunction } from "express"
 import { CustomError } from './../utils/customError'
 import { Community } from './../model/communityModel'
-import { verify } from 'jsonwebtoken'
 import { getUserFromAuthToken } from './../utils/getUserFromToken'
 
 
@@ -41,4 +40,26 @@ const createCommunity = async (req: Request, res: Response, next: NextFunction) 
     }
 }
 
-export {createCommunity}
+    const getAllCommunities = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const communities = await Community.find().populate({
+                path: 'owner',
+                model: 'User',
+                select: 'name',
+                foreignField: 'id'
+            })
+            
+            res.status(200).json({
+                status: true,
+                meta: {
+                    total: communities.length,
+                    pages: Math.ceil(communities.length / 10),
+                },
+                data: communities
+            })
+        } catch (err) {
+            return next(err)
+        }
+    }
+
+export {createCommunity, getAllCommunities}

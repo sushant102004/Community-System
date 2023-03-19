@@ -31,7 +31,7 @@ export const userSchema = new mongoose.Schema({
         trim: true,
         unique: true,
         validate: {
-            validator(value : string) : boolean {
+            validator(value: string): boolean {
                 return validator.isEmail(value)
             }
         }
@@ -43,7 +43,7 @@ export const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         validate: {
-            validator(value : string) : boolean {
+            validator(value: string): boolean {
                 return validator.isAlphanumeric(value)
             }
         },
@@ -54,10 +54,19 @@ export const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    __v: { type: Number, select: false },
+    // _id: { type: mongoose.Schema.Types.ObjectId, select: false},
+}, {
+    toJSON: {
+        transform: function (doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+        }
+    }
 })
 
-userSchema.pre('save', async function(next) {
-    if(!this.isModified('password')) return next()
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next()
     this.password = await bcrypt.hash(this.password, 12)
     this.email = this.email.toLocaleLowerCase()
     next()
