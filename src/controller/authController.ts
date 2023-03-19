@@ -43,7 +43,7 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
         if (!email || !password) {
             return next(new CustomError('Please enter details.', 404))
         }
-        let user = await User.findOne({ email: email }).select('+password')
+        const user = await User.findOne({ email }).select('+password')
         if (!user) {
             return next(new CustomError('Account not found.', 404))
         }

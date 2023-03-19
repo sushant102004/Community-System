@@ -11,8 +11,8 @@ const createNewRole = async (req: Request, res: Response, next: NextFunction) =>
         if(!name) return next(new CustomError('Provide role name and scopes.', 403))
 
         const newRole = await Role.create({
-            name: name,
-            scopes: scopes
+            name,
+            scopes
         })
         res.status(200).json({
             status: true,

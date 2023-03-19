@@ -20,7 +20,7 @@ const createCommunity = async (req: Request, res: Response, next: NextFunction) 
         )
 
         const newCommunity = await Community.create({
-            name: name,
+            name,
             owner: userID
         })
 
@@ -118,7 +118,7 @@ const getMyOwnedCommunities = async (req: Request, res: Response, next: NextFunc
                 },
                 data : communities
             }
-        })        
+        })
     } catch (err) {
         return next(err)
     }
@@ -150,7 +150,7 @@ const getMyJoinedCommunities = async (req: Request, res: Response, next: NextFun
                 },
                 data : communities
             }
-        })        
+        })
     } catch (err) {
         return next(err)
     }

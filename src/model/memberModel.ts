@@ -16,7 +16,7 @@ const memberSchema = new mongoose.Schema({
     },
 
     community: String,
-    
+
     user: {
         type: String,
         ref: 'User'
@@ -34,7 +34,7 @@ const memberSchema = new mongoose.Schema({
     __v: { type: Number, select: false },
 }, {
     toJSON: {
-        transform: function (doc, ret) {
+        transform (doc, ret) {
             ret._id;
             delete ret._id;
         }

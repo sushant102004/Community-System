@@ -10,11 +10,11 @@ const addMember = async (req: Request, res: Response, next: NextFunction) => {
         if(!community || !user || !role) {
             return next(new CustomError('Invalid details.', 403))
         }
-    
+
         const newMember = await Member.create({
-            community: community,
-            user: user,
-            role: role
+            community,
+            user,
+            role
         })
 
         res.status(200).json({
@@ -22,9 +22,9 @@ const addMember = async (req: Request, res: Response, next: NextFunction) => {
             content: {
                 data: {
                     id: newMember.id,
-                    community: community,
-                    user: user,
-                    role: role,
+                    community,
+                    user,
+                    role,
                     created_at: newMember.created_at
                 }
             }

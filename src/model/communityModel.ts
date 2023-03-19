@@ -41,18 +41,18 @@ const communitySchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    __v: { type: Number, select: false},
+    __v: { type: Number, select: false },
     // _id: { type: mongoose.Schema.Types.ObjectId, select: false},
 }, {
     toJSON: {
-        transform: function (doc, ret) {
-            ret._id;
-            delete ret._id;
+        transform(doc, ret) {
+            ret._id
+            delete ret._id
         }
     }
 })
 
-communitySchema.pre('save', async function(next) {
+communitySchema.pre('save', async function (next) {
     this.slug = slugify(this.name)
     next()
 })

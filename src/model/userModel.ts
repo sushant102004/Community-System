@@ -58,7 +58,7 @@ export const userSchema = new mongoose.Schema({
     // _id: { type: mongoose.Schema.Types.ObjectId, select: false},
 }, {
     toJSON: {
-        transform: function (doc, ret) {
+        transform (doc, ret) {
             ret._id;
             delete ret._id;
         }

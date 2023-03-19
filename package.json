@@ -6,7 +6,6 @@
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
-    "prestart": "npm run build",
     "start": "nodemon src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,7 +22,8 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.2",
     "slugify": "^1.6.5",
-    "validator": "^13.9.0"
+    "validator": "^13.9.0",
+    "vercel": "^28.17.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
