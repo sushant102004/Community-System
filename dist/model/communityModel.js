@@ -30,7 +30,8 @@ const communitySchema = new mongoose_1.default.Schema({
     slug: String,
     owner: {
         type: String,
-        ref: 'User'
+        ref: 'User',
+        required: true,
     },
     created_at: {
         type: Date,
@@ -40,6 +41,15 @@ const communitySchema = new mongoose_1.default.Schema({
         type: Date,
         default: Date.now()
     },
+    __v: { type: Number, select: false },
+    // _id: { type: mongoose.Schema.Types.ObjectId, select: false},
+}, {
+    toJSON: {
+        transform: function (doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+        }
+    }
 });
 communitySchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {

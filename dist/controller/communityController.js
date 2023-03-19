@@ -9,19 +9,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCommunity = void 0;
+exports.getAllCommunities = exports.createCommunity = void 0;
 const customError_1 = require("./../utils/customError");
 const communityModel_1 = require("./../model/communityModel");
+const getUserFromToken_1 = require("./../utils/getUserFromToken");
 const createCommunity = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name } = req.body;
         if (!name) {
             return next(new customError_1.CustomError('Provide community name.', 403));
         }
-        // const user =         
+        let userID;
+        yield (0, getUserFromToken_1.getUserFromAuthToken)(req, res, next).then((user) => userID = user.id);
         const newCommunity = yield communityModel_1.Community.create({
             name: name,
-            owner: 7043095415236738000
+            owner: userID
         });
         res.status(200).json({
             status: true,
@@ -42,4 +44,26 @@ const createCommunity = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.createCommunity = createCommunity;
+const getAllCommunities = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const communities = yield communityModel_1.Community.find().populate({
+            path: 'owner',
+            model: 'User',
+            select: 'name',
+            foreignField: 'id'
+        });
+        res.status(200).json({
+            status: true,
+            meta: {
+                total: communities.length,
+                pages: Math.ceil(communities.length / 10),
+            },
+            data: communities
+        });
+    }
+    catch (err) {
+        return next(err);
+    }
+});
+exports.getAllCommunities = getAllCommunities;
 //# sourceMappingURL=communityController.js.map

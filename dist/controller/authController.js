@@ -82,17 +82,18 @@ const signIn = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
 exports.signIn = signIn;
 const getMe = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield (0, getUserFromToken_1.getUserFromAuthToken)(req, res, next);
-        res.status(200).json({
-            status: true,
-            content: {
-                data: {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    created_at: user.created_at,
+        yield (0, getUserFromToken_1.getUserFromAuthToken)(req, res, next).then((user) => {
+            res.status(200).json({
+                status: true,
+                content: {
+                    data: {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        created_at: user.created_at,
+                    }
                 }
-            }
+            });
         });
     }
     catch (err) {

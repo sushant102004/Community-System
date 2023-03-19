@@ -5,5 +5,5 @@ const express_1 = require("express");
 const communityController_1 = require("./../controller/communityController");
 const communityRouter = (0, express_1.Router)();
 exports.communityRouter = communityRouter;
-communityRouter.route('/').post(communityController_1.createCommunity);
+communityRouter.route('/').post(communityController_1.createCommunity).get(communityController_1.getAllCommunities);
 //# sourceMappingURL=communityRoutes.js.map

@@ -79,6 +79,15 @@ exports.userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    __v: { type: Number, select: false },
+    // _id: { type: mongoose.Schema.Types.ObjectId, select: false},
+}, {
+    toJSON: {
+        transform: function (doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+        }
+    }
 });
 exports.userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
