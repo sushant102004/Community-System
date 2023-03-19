@@ -33,7 +33,7 @@ app.get('/', (req: Request, res : Response) => {
 app.use('/v1/auth', authRouter)
 
 app.get('*', (req: Request, res : Response, next: NextFunction) => {
-    next(new CustomError(`The Route ${req.originalUrl} is not defined`, '400'))
+    next(new CustomError(`The Route ${req.originalUrl} is not defined`, 400))
 })
 
 

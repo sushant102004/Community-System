@@ -43,17 +43,18 @@ const userSchema = new mongoose.Schema({
             validator(value : string) : boolean {
                 return validator.isAlphanumeric(value)
             }
-        }
+        },
+        select: false,
     },
 
     created_at: {
         type: Date,
         default: Date.now()
-    }
+    },
 })
 
 userSchema.pre('save', async function(next) {
-    if(!this.isModified(this.password)) return next()
+    if(!this.isModified('password')) return next()
     this.password = await bcrypt.hash(this.password, 12)
     this.email = this.email.toLocaleLowerCase()
     next()
