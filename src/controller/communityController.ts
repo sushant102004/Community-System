@@ -124,4 +124,36 @@ const getMyOwnedCommunities = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export { createCommunity, getAllCommunities, getAllMembers, getMyOwnedCommunities }
+const getMyJoinedCommunities = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        let myID: string
+
+        await getUserFromAuthToken(req, res, next).then((user: SavedUserDocument) => {
+            myID = user.id
+        })
+
+    const communities = await Member.find({
+            user: myID
+        }).select('-id').select('-user').select('-role').select('-created_at').populate({
+            path: 'community',
+            model: 'Community',
+            select: 'community',
+            foreignField: 'id'
+        })
+
+        res.status(200).json({
+            status: true,
+            content : {
+                meta : {
+                    total: communities.length,
+                    pages: Math.ceil(communities.length / 10),
+                },
+                data : communities
+            }
+        })        
+    } catch (err) {
+        return next(err)
+    }
+}
+
+export { createCommunity, getAllCommunities, getAllMembers, getMyOwnedCommunities, getMyJoinedCommunities }

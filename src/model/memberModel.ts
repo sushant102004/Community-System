@@ -44,4 +44,4 @@ const memberSchema = new mongoose.Schema({
 
 const Member = mongoose.model<SavedMemberDocument>('Member', memberSchema)
 
-export { Member }
+export { Member, SavedMemberDocument }
