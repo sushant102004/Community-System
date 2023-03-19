@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import validator from 'validator'
 import { Snowflake } from '@theinternetfolks/snowflake'
 import slugify from 'slugify'
 

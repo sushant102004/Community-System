@@ -29,13 +29,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv = __importStar(require("dotenv"));
+const customError_1 = require("./utils/customError");
+const errorController_1 = __importDefault(require("./controller/errorController"));
+const authRoutes_1 = require("./routes/authRoutes");
+const communityRoutes_1 = require("./routes/communityRoutes");
 dotenv.config();
 const app = (0, express_1.default)();
 const PORT = 3000;
 app.use(express_1.default.json());
 mongoose_1.default.set('strictQuery', false);
-mongoose_1.default.connect(process.env.MONGO_DB_URI)
+mongoose_1.default.connect('mongodb://root:root1234@127.0.0.1:27017/theInternetFolks?authSource=admin')
     .then(() => {
     app.listen(PORT);
+    console.log(`Listening On PORT ${PORT}`);
 }).catch(err => console.log(`Error: ${err}`));
+app.get('/', (req, res) => {
+    res.status(200).json({
+        status: true,
+        message: 'This is home route.'
+    });
+});
+app.use('/v1/auth', authRoutes_1.authRouter);
+app.use('/v1/community', communityRoutes_1.communityRouter);
+app.get('*', (req, res, next) => {
+    next(new customError_1.CustomError(`The Route ${req.originalUrl} is not defined`, 400));
+});
+app.use(errorController_1.default);
 //# sourceMappingURL=app.js.map

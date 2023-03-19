@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express"
 import { CustomError } from './../utils/customError'
 import { Community } from './../model/communityModel'
 import { verify } from 'jsonwebtoken'
+import { getUserFromAuthToken } from './../utils/getUserFromToken'
 
 
 const createCommunity = async (req: Request, res: Response, next: NextFunction) => {
@@ -11,6 +12,8 @@ const createCommunity = async (req: Request, res: Response, next: NextFunction) 
         if(!name) {
             return next(new CustomError('Provide community name.', 403))
         }
+
+        // const user =         
 
         const newCommunity = await Community.create({ 
             name : name,

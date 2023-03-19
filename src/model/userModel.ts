@@ -1,9 +1,17 @@
-import mongoose, { Model } from 'mongoose'
+import * as mongoose from 'mongoose'
 import validator from 'validator'
 import { Snowflake } from '@theinternetfolks/snowflake'
 import bcrypt from 'bcryptjs'
 
-const userSchema = new mongoose.Schema({
+interface SavedUserDocument extends mongoose.Document {
+    id: number,
+    name: string,
+    email: string,
+    password: string,
+    created_at: Date
+}
+
+export const userSchema = new mongoose.Schema({
     id: {
         type: String,
         default: Snowflake.generate()
@@ -55,6 +63,6 @@ userSchema.pre('save', async function(next) {
     next()
 })
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model<SavedUserDocument>('User', userSchema)
 
-export { User }
+export { User, SavedUserDocument }
