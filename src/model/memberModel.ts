@@ -16,9 +16,17 @@ const memberSchema = new mongoose.Schema({
     },
 
     community: String,
-    user: String,
-    role: String,
     
+    user: {
+        type: String,
+        ref: 'User'
+    },
+
+    role: {
+        type: String,
+        ref: 'Role'
+    },
+
     created_at: {
         type: Date,
         default: Date.now()
@@ -27,7 +35,7 @@ const memberSchema = new mongoose.Schema({
 }, {
     toJSON: {
         transform: function (doc, ret) {
-            ret.id = ret._id;
+            ret._id;
             delete ret._id;
         }
     }
