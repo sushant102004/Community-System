@@ -54,7 +54,7 @@ exports.roleSchema = new mongoose.Schema({
 }, {
     toJSON: {
         transform: function (doc, ret) {
-            ret.id = ret._id;
+            ret._id;
             delete ret._id;
         }
     }

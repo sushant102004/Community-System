@@ -34,6 +34,7 @@ const errorController_1 = __importDefault(require("./controller/errorController"
 const authRoutes_1 = require("./routes/authRoutes");
 const communityRoutes_1 = require("./routes/communityRoutes");
 const roleRoutes_1 = require("./routes/roleRoutes");
+const memberRoute_1 = require("./routes/memberRoute");
 dotenv.config();
 const app = (0, express_1.default)();
 const PORT = 3000;
@@ -53,6 +54,7 @@ app.get('/', (req, res) => {
 app.use('/v1/auth', authRoutes_1.authRouter);
 app.use('/v1/community', communityRoutes_1.communityRouter);
 app.use('/v1/role', roleRoutes_1.roleRouter);
+app.use('/v1/member', memberRoute_1.memberRouter);
 app.get('*', (req, res, next) => {
     next(new customError_1.CustomError(`The Route ${req.originalUrl} is not defined`, 400));
 });
