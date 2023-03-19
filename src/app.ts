@@ -6,6 +6,7 @@ import { CustomError } from './utils/customError'
 import errorController from './controller/errorController'
 
 import { authRouter } from './routes/authRoutes'
+import { communityRouter } from './routes/communityRoutes'
 
 dotenv.config()
 
@@ -31,6 +32,7 @@ app.get('/', (req: Request, res : Response) => {
 })
 
 app.use('/v1/auth', authRouter)
+app.use('/v1/community', communityRouter)
 
 app.get('*', (req: Request, res : Response, next: NextFunction) => {
     next(new CustomError(`The Route ${req.originalUrl} is not defined`, 400))

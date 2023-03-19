@@ -14,11 +14,6 @@ const userSchema = new mongoose.Schema({
         maxLength: 64,
         required: true,
         trim: true,
-        validate: {
-            validator(value : string) : boolean {
-                return validator.isAlpha(value)
-            }
-        }
     },
 
     email: {

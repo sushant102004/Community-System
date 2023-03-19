@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import validator from 'validator'
 import { Snowflake } from '@theinternetfolks/snowflake'
+import slugify from 'slugify'
 
 const communitySchema = new mongoose.Schema({
     id: {
@@ -13,12 +14,9 @@ const communitySchema = new mongoose.Schema({
         maxLength: 128,
         required: true,
         trim: true,
-        validate: {
-            validator(value : string) : boolean {
-                return validator.isAlpha(value)
-            }
-        }
     },
+
+    slug: String,
 
     owner: {
         type: String,
@@ -36,6 +34,10 @@ const communitySchema = new mongoose.Schema({
     },
 })
 
+communitySchema.pre('save', async function(next) {
+    this.slug = slugify(this.name)
+    next()
+})
 
 const Community = mongoose.model('Community', communitySchema)
 
