@@ -96,4 +96,32 @@ const getAllMembers = async (req: Request, res: Response, next: NextFunction) =>
     }
 }
 
-export { createCommunity, getAllCommunities, getAllMembers }
+const getMyOwnedCommunities = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        let myID: string
+
+        await getUserFromAuthToken(req, res, next).then((user: SavedUserDocument) => {
+            myID = user.id
+        })
+
+
+    const communities = await Community.find({
+            owner: myID
+        })
+
+        res.status(200).json({
+            status: true,
+            content : {
+                meta : {
+                    total: communities.length,
+                    pages: Math.ceil(communities.length / 10),
+                },
+                data : communities
+            }
+        })        
+    } catch (err) {
+        return next(err)
+    }
+}
+
+export { createCommunity, getAllCommunities, getAllMembers, getMyOwnedCommunities }
