@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs'
 
 const userSchema = new mongoose.Schema({
     id: {
-        type: Number,
+        type: String,
         default: Snowflake.generate()
     },
 
