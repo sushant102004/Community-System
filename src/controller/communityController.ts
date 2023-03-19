@@ -1,4 +1,4 @@
-import { User } from './../model/userModel'
+import { SavedUserDocument, User } from './../model/userModel'
 import { Request, Response, NextFunction } from "express"
 import { CustomError } from './../utils/customError'
 import { Community } from './../model/communityModel'
@@ -13,11 +13,14 @@ const createCommunity = async (req: Request, res: Response, next: NextFunction) 
             return next(new CustomError('Provide community name.', 403))
         }
 
-        // const user =         
+        let userID: string
+        await getUserFromAuthToken(req, res, next).then(
+            (user: SavedUserDocument) => userID = user.id
+        )        
 
         const newCommunity = await Community.create({ 
             name : name,
-            owner: 7043095415236738000
+            owner: userID
          })
 
          res.status(200).json({

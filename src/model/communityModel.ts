@@ -2,6 +2,15 @@ import mongoose from 'mongoose'
 import { Snowflake } from '@theinternetfolks/snowflake'
 import slugify from 'slugify'
 
+interface SavedCommunityModel extends mongoose.Document {
+    id: string,
+    name: string,
+    slug: string,
+    owner: mongoose.ObjectId,
+    created_at: Date,
+    updated_at: Date
+}
+
 const communitySchema = new mongoose.Schema({
     id: {
         type: String,
@@ -38,6 +47,6 @@ communitySchema.pre('save', async function(next) {
     next()
 })
 
-const Community = mongoose.model('Community', communitySchema)
+const Community = mongoose.model<SavedCommunityModel>('Community', communitySchema)
 
-export { Community }
+export { Community, SavedCommunityModel }

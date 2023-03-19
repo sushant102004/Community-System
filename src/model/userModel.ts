@@ -4,7 +4,7 @@ import { Snowflake } from '@theinternetfolks/snowflake'
 import bcrypt from 'bcryptjs'
 
 interface SavedUserDocument extends mongoose.Document {
-    id: number,
+    id: string,
     name: string,
     email: string,
     password: string,
