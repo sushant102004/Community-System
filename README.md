@@ -1,6 +1,4 @@
-## 🔥 The Internet Folks
-This code is for the assignment for <b>SDE Job</b> at The Internet Folks.
-
+## 🔥 Community System
 This is a backend application that has an authentication and community system. Where users can create communities and add and remove other users from their communities. It has to have roles assigned for role-based access. Users can also view communities and much more.
 
 ### 🚀 Endpoints
